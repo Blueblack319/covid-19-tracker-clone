@@ -3,6 +3,7 @@
 }
 
 body {
+  margin-top: 20px;
   background-color: #f5f6fa;
 }
 
@@ -27,5 +28,8 @@ body {
 @media (max-width: 990px) {
   .app {
     flex-direction: column;
+  }
+  .app__right {
+    margin-top: 20px;
   }
 }

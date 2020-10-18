@@ -10,6 +10,8 @@ import {FormControl,
 
 import InfoBox from './InfoBox';
 import Table from "./Table";
+import { sortData } from './utils';
+import LineGraph from './LineGraph';
 
 function App() {
   const [countries, setCountries] = useState([]);
@@ -35,8 +37,9 @@ function App() {
           value: resItem.countryInfo.iso2,
           key: resItem.countryInfo.iso3
         }));
+        const sortedData = sortData(resData);
         setCountries(countries);
-        setTableData(resData);
+        setTableData(sortedData);
       });
     }
     getCountries();
@@ -45,12 +48,11 @@ function App() {
   const handleCountryChanged = async (event) => {
     const countryCode = event.target.value;
     const url = countryCode === "Worldwide" ? "https://disease.sh/v3/covid-19/all" : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
-    console.log(countryCode, url);
     await fetch(url)
     .then(res => res.json())
     .then(resData => {
       setCountry(countryCode);
-      setCountryInfo(resData)
+      setCountryInfo(resData);
     })
   }
 
@@ -76,7 +78,8 @@ function App() {
         <CardContent>
           <h2>Live Cases by Country</h2>
             <Table countries={tableData} />
-          <h2>Worldwide new Cases</h2>  
+          <h2>Worldwide new Cases</h2> 
+            <LineGraph dataType="cases"/> 
         </CardContent>
       </Card>
     </div>
