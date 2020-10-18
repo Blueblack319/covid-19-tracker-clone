@@ -5,10 +5,11 @@ import "leaflet/dist/leaflet.css";
 import "./Map.css";
 
 import {Card} from "@material-ui/core"
+import numeral from "numeral";
 
 const casesTypeColors = {
   cases: {
-    color: "#e74c3c",
+    color: "#CA0B2F",
     multiplier: 500
   },
   recovered: {
@@ -33,7 +34,16 @@ const showCircleAndInfo = (countries, casesType="cases") => (
       }
     >
       <Popup>
-        <h2>Im a Popup</h2>
+        <div className="info">
+          <div
+            className="info__flag"
+            style={{backgroundImage: `url(${country.countryInfo.flag})`}}
+          />
+          <div className="info__countryName">{country.country}</div>
+          <div className="info__cases">Cases: {numeral(country.cases).format("0,0")}</div>
+          <div className="info__recovered">Recovered: {numeral(country.recovered).format("0,0")}</div>
+          <div className="info__deaths">Deaths: {numeral(country.deaths).format("0,0")}</div>
+        </div>
       </Popup>
     </Circle>
   ))

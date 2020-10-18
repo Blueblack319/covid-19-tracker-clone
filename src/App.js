@@ -10,7 +10,7 @@ import {FormControl,
 
 import InfoBox from './InfoBox';
 import Table from "./Table";
-import { sortData } from './utils';
+import { sortData, prettyPrintStat } from './utils';
 import LineGraph from './LineGraph';
 import Map from "./Map";
 
@@ -77,9 +77,9 @@ function App() {
           </FormControl>
         </div>
         <div className="app__stats">
-          <InfoBox title="Coronavirus Cases" cases={countryInfo.todayCases} total={countryInfo.cases} />
-          <InfoBox title="Recovered Cases" cases={countryInfo.todayRecovered} total={countryInfo.recovered} />
-          <InfoBox title="Death Cases" cases={countryInfo.todayDeaths} total={countryInfo.deaths} />
+          <InfoBox title="Coronavirus Cases" cases={prettyPrintStat(countryInfo.todayCases)} total={prettyPrintStat(countryInfo.cases)} />
+          <InfoBox title="Recovered Cases" cases={prettyPrintStat(countryInfo.todayRecovered)} total={prettyPrintStat(countryInfo.recovered)} />
+          <InfoBox title="Death Cases" cases={prettyPrintStat(countryInfo.todayDeaths)} total={prettyPrintStat(countryInfo.deaths)} />
         </div>
         <Map center={mapCenter} zoom={mapZoom} countries={mapCountries} casesType="cases"/>
       </div>
