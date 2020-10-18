@@ -6,14 +6,24 @@ import {FormControl,
   MenuItem,
   Card,
   CardContent,
-} from "@material-ui/core"
+} from "@material-ui/core";
 
 import InfoBox from './InfoBox';
+import Table from "./Table";
 
 function App() {
   const [countries, setCountries] = useState([]);
-  const [country, setCountry] = useState("Worldwide")
-  const [countryInfo, setCountryInfo] = useState("");
+  const [country, setCountry] = useState("Worldwide");
+  const [countryInfo, setCountryInfo] = useState({});
+  const [tableData, setTableData] = useState([]);
+
+  useEffect(() => {
+    fetch("https://disease.sh/v3/covid-19/all")
+    .then(res => res.json())
+    .then(resData => {
+      setCountryInfo(resData);
+    })
+  }, [])
 
   useEffect(() => {
     const getCountries = async () => {
@@ -24,16 +34,12 @@ function App() {
           name: resItem.country,
           value: resItem.countryInfo.iso2,
           key: resItem.countryInfo.iso3
-        }))
-        setCountries(countries)
+        }));
+        setCountries(countries);
+        setTableData(resData);
       });
     }
     getCountries();
-    fetch("https://disease.sh/v3/covid-19/all")
-    .then(res => res.json())
-    .then(resData => {
-      setCountryInfo(resData)
-    })
   }, [])
 
   const handleCountryChanged = async (event) => {
@@ -68,8 +74,9 @@ function App() {
       </div>
       <Card className="app__right">
         <CardContent>
-          <h2>Case by Country</h2>
-          <h2>Worldwide new Cases</h2>
+          <h2>Live Cases by Country</h2>
+            <Table countries={tableData} />
+          <h2>Worldwide new Cases</h2>  
         </CardContent>
       </Card>
     </div>
