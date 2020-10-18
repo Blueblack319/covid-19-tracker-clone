@@ -25,11 +25,6 @@ const options = {
     scales: {
     xAxes: [{
       type: "time",
-      time: {
-        displayFormats: {
-          month: 'MMM YYYY',
-      }
-      }
     }],
     yAxes: [{
       gridLines: {
@@ -78,17 +73,18 @@ function LineGraph({dataType}) {
     return (
       <div className="lineGraph">
         {data?.length > 0 && <Line
-        data={{
-            datasets: [
-                {
-                    backgroundColor: "rgba(204, 16, 52, 0.5)",
-                    borderColor: "#CC1034",
-                    data
-                }
-            ]
-        }}
-        options={options}
-        />}
+          data={{
+              datasets: [
+                  {
+                      backgroundColor: "rgba(204, 16, 52, 0.5)",
+                      borderColor: "#CC1034",
+                      data
+                  }
+              ]
+          }}
+          options={options}
+          />
+        }
       </div>
     )
 }
