@@ -13,6 +13,7 @@ import InfoBox from './InfoBox';
 function App() {
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState("Worldwide")
+  const [countryInfo, setCountryInfo] = useState("");
 
   useEffect(() => {
     const getCountries = async () => {
@@ -28,34 +29,48 @@ function App() {
       });
     }
     getCountries();
+    fetch("https://disease.sh/v3/covid-19/all")
+    .then(res => res.json())
+    .then(resData => {
+      setCountryInfo(resData)
+    })
   }, [])
 
-  const handleCountryChanged = (event) => {
+  const handleCountryChanged = async (event) => {
     const countryCode = event.target.value;
-    setCountry(countryCode);
+    const url = countryCode === "Worldwide" ? "https://disease.sh/v3/covid-19/all" : `https://disease.sh/v3/covid-19/countries/${countryCode}`;
+    console.log(countryCode, url);
+    await fetch(url)
+    .then(res => res.json())
+    .then(resData => {
+      setCountry(countryCode);
+      setCountryInfo(resData)
+    })
   }
 
   return (
     <div className="app">
-      <div class="app__left">
+      <div className="app__left">
         <div className="app__header">
           <h1>COVID-19 TRACKER</h1>
           <FormControl className="app__dropdown">
             <Select variant="outlined" value={country} onChange={handleCountryChanged}>
-              <MenuItem value="Worldwide" key="WORLD">Worldwide</MenuItem>
+              <MenuItem value="Worldwide" key="Worldwide">Worldwide</MenuItem>
               {countries.map((country) => <MenuItem value={country.value} key={country.name}>{country.name}</MenuItem>)}
             </Select>
           </FormControl>
         </div>
         <div className="app__stats">
-          <InfoBox title="Coronavirus Cases" cases="2000" total="1.2k" />
-          <InfoBox title="Recovered Cases" cases="2000" total="1.2k" />
-          <InfoBox title="Death Cases" cases="2000" total="1.2k" />
+          <InfoBox title="Coronavirus Cases" cases={countryInfo.todayCases} total={countryInfo.cases} />
+          <InfoBox title="Recovered Cases" cases={countryInfo.todayRecovered} total={countryInfo.recovered} />
+          <InfoBox title="Death Cases" cases={countryInfo.todayDeaths} total={countryInfo.deaths} />
         </div>
       </div>
-      <Card class="app__right">
-        <h2>Case by Country</h2>
-        <h2>Worldwide new Cases</h2>
+      <Card className="app__right">
+        <CardContent>
+          <h2>Case by Country</h2>
+          <h2>Worldwide new Cases</h2>
+        </CardContent>
       </Card>
     </div>
   );
