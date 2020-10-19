@@ -14,9 +14,9 @@ const casesTypeColors = {
   },
   recovered: {
     color: "#2ecc71",
-    multiplier: 1200
+    multiplier: 700
   },
-  death: {
+  deaths: {
     color: "#bdc3c7",
     multiplier: 1600
   }
@@ -25,6 +25,7 @@ const casesTypeColors = {
 const showCircleAndInfo = (countries, casesType="cases") => (
   countries.map((country) => (
     <Circle 
+      key={country.country}
       center={[country.countryInfo.lat, country.countryInfo.long]}
       fillColor={casesTypeColors[casesType].color}
       fillOpacity={0.4}

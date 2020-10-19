@@ -1,14 +1,15 @@
 .infoBox {
-  flex: 1;
+  width: 100%;
+  cursor: pointer;
 }
 
-.infoBox:not(:last-of-type) {
-  margin-right: 15px;
+.infoBox {
+  margin-bottom: 10px;
 }
 
 .infoBox__cases {
   font-weight: 600;
-  color: #cc1236;
+  color: #ca0b2f;
   font-size: 1.75rem;
   margin-bottom: 0.5rem;
 }
@@ -18,4 +19,33 @@
   color: #bdc3c7;
   font-size: 0.8rem !important;
   margin-top: 10px !important;
+}
+
+.infoBox--cases--selected {
+  border-top: 10px solid #ca0b2f;
+}
+
+.infoBox--recovered--selected {
+  border-top: 10px solid #2ecc71;
+}
+
+.infoBox--deaths--selected {
+  border-top: 10px solid #bdc3c7;
+}
+
+.infoBox__cases--recovered {
+  color: #2ecc71;
+}
+
+.infoBox__cases--deaths {
+  color: #bdc3c7;
+}
+
+@media (min-width: 700px) {
+  .infoBox {
+    flex: 1;
+  }
+  .infoBox:not(:last-of-type) {
+    margin-right: 10px;
+  }
 }

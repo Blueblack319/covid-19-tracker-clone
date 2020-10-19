@@ -12,7 +12,7 @@ const options = {
       }
     },
     maintainAspectRadio: false,
-    responsive: true,
+    // responsive: true,
     tooltips:{
       mode: "index",
       intersect: false,
@@ -54,34 +54,63 @@ const buildData = (dataList) => {
     return builtData;
 }
 
-function LineGraph({dataType}) {
+function LineGraph({casesType}) {
     const [data, setData] = useState({});
+    const [datasets, setDatasets] = useState(null);
 
     useEffect(() => {
         const getData = async () => {
             await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=120")
             .then(res => res.json())
             .then(resData => {
-                const pointList = buildData(resData[dataType]);
+                const pointList = buildData(resData[casesType]);
                 setData(pointList);
             })
         }
 
         getData();
-    },[dataType])
+    },[casesType])
+
+    useEffect(() => {
+      if(data?.length > 0){
+        if(casesType === "cases"){
+          setDatasets({
+            datasets: [
+              {
+                  backgroundColor: "rgba(204, 16, 52, 0.5)",
+                  borderColor: "#CC1034",
+                  data
+              }
+            ]
+          })
+        }else if(casesType === "recovered"){
+          setDatasets({
+            datasets: [
+              {
+                  backgroundColor: "rgba(46, 204, 113, 0.5)",
+                  borderColor: "#2ecc71",
+                  data
+              }
+            ]
+          })
+        }else{
+          setDatasets({
+            datasets: [
+              {
+                  backgroundColor: "rgba(189, 195, 199, 0.5)",
+                  borderColor: "#bdc3c7",
+                  data
+              }
+            ]
+          })
+        }
+      }
+    }, [data, casesType])
 
     return (
       <div className="lineGraph">
-        {data?.length > 0 && <Line
-          data={{
-              datasets: [
-                  {
-                      backgroundColor: "rgba(204, 16, 52, 0.5)",
-                      borderColor: "#CC1034",
-                      data
-                  }
-              ]
-          }}
+        {data?.length > 0 && datasets && <Line
+          data={datasets}
           options={options}
           />
         }

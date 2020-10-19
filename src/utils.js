@@ -13,5 +13,5 @@ export const sortData = (data) => {
 }
 
 export const prettyPrintStat = (stat) => (
-	numeral(stat).format("0.0a")
+	stat ? `+${numeral(stat).format("0.0a")}` : "+0"
 )
